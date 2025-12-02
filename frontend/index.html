@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Replacement Algorithm Simulator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="title">📊 Page Replacement Simulator</h1>
+        <p class="subtitle">Compare FIFO, LRU, Optimal, and Clock algorithms</p>
+      </div>
+      <div class="theme-toggle">
+        <button id="themeBtn" class="theme-btn" aria-label="Toggle theme">🌙</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Input Section -->
+      <section class="input-section card">
+        <h2 class="section-title">Configuration</h2>
+        <div class="input-grid">
+          <div class="input-group">
+            <label for="pages">Reference String (space-separated)</label>
+            <input
+              type="text"
+              id="pages"
+              placeholder="e.g., 1 2 3 4 5 6 7 8 9"
+              value=""
+            />
+            <small class="hint">Enter page numbers separated by spaces (e.g., 1 2 3 4 5)</small>
+          </div>
+          <div class="input-group">
+            <label for="frames">Number of Frames</label>
+            <div class="input-with-slider">
+              <input type="number" id="frames" min="1" max="10" value="3" />
+              <input type="range" id="framesSlider" min="1" max="10" value="3" />
+            </div>
+            <small class="hint">Available memory frames</small>
+          </div>
+        </div>
+        <button id="simulateBtn" class="btn btn-primary">🚀 Simulate</button>
+      </section>
+
+      <!-- Algorithm Selection -->
+      <section class="algo-section card">
+        <h2 class="section-title">Select Algorithms</h2>
+        <div class="algo-grid">
+          <label class="algo-checkbox">
+            <input type="checkbox" name="algo" value="fifo" checked />
+            <span class="algo-label">FIFO</span>
+            <small>First In, First Out</small>
+          </label>
+          <label class="algo-checkbox">
+            <input type="checkbox" name="algo" value="lru" checked />
+            <span class="algo-label">LRU</span>
+            <small>Least Recently Used</small>
+          </label>
+          <label class="algo-checkbox">
+            <input type="checkbox" name="algo" value="optimal" checked />
+            <span class="algo-label">Optimal</span>
+            <small>Optimal Page Replacement</small>
+          </label>
+          <label class="algo-checkbox">
+            <input type="checkbox" name="algo" value="clock" />
+            <span class="algo-label">Clock</span>
+            <small>Clock Algorithm</small>
+          </label>
+        </div>
+      </section>
+
+      <!-- Metrics Overview -->
+      <section id="metricsSection" class="metrics-section card" style="display: none">
+        <h2 class="section-title">Performance Metrics</h2>
+        <div id="metricsGrid" class="metrics-grid"></div>
+      </section>
+
+      <!-- Simulation Results -->
+      <section id="resultsSection" class="results-section" style="display: none">
+        <h2 class="section-title">Simulation Results</h2>
+        <div id="resultsContainer" class="results-container"></div>
+      </section>
+
+      <!-- Comparison Chart -->
+      <section id="comparisonSection" class="comparison-section card" style="display: none">
+        <h2 class="section-title">Algorithm Comparison</h2>
+        <div class="chart-container">
+          <div class="chart-bars" id="comparisonChart"></div>
+          <div class="chart-legend" id="comparisonLegend"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 Page Replacement Simulator | Educational Tool</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
