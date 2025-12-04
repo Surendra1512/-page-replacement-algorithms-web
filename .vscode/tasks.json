@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Open App in Browser (Local)",
+      "type": "shell",
+      "command": "powershell.exe -ExecutionPolicy Bypass -File \"${workspaceFolder}\\open-local.ps1\"",
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

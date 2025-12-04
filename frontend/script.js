@@ -80,12 +80,7 @@ async function runSimulation() {
         body: JSON.stringify({ pages, frames, algo })
       });
 
-      if (!resp.ok) {
-        const err = await resp.json();
-        throw new Error(err.error || "Server error");
-      }
-
-      const data = await resp.json();
+      const data = await parseJsonResponse(resp);
       currentResults[algo] = data;
     }
 
@@ -282,6 +277,54 @@ function darkenColor(hex) {
       .toString(16)
       .slice(1)
   );
+}
+
+// Safely parse JSON from a Response and give helpful errors instead of
+// "Unexpected end of JSON input" when the backend is not reachable or
+// returns non‑JSON (e.g. an HTML error page).
+async function parseJsonResponse(resp) {
+  const contentType = resp.headers.get("content-type") || "";
+  const text = await resp.text();
+
+  // Handle completely empty responses (common when backend is down)
+  if (!text) {
+    throw new Error(
+      `Empty response from server (status ${resp.status}). ` +
+      `Make sure the Flask backend (app.py) is running.`
+    );
+  }
+
+  // If the server isn't sending JSON at all (e.g. HTML 404 from Live Server)
+  if (!contentType.toLowerCase().includes("application/json")) {
+    if (!resp.ok) {
+      throw new Error(
+        `Server returned an error (status ${resp.status}) and not JSON. ` +
+        `You might be hitting a different server (e.g. VS Code Live Server) instead of the Flask backend.`
+      );
+    }
+    throw new Error(
+      "Server did not return JSON. Make sure you opened the app from the Flask backend at http://127.0.0.1:5000/."
+    );
+  }
+
+  try {
+    const data = JSON.parse(text);
+
+    // If HTTP status is not OK, but we did get JSON, surface a nicer message
+    if (!resp.ok) {
+      const msg =
+        (data && typeof data === "object" && data.error) ||
+        `Server error (status ${resp.status}).`;
+      throw new Error(msg);
+    }
+
+    return data;
+  } catch (err) {
+    // JSON.parse failed even though content-type said JSON
+    throw new Error(
+      "Received invalid JSON from server. Please restart the backend and try again."
+    );
+  }
 }
 
 // ============================================
